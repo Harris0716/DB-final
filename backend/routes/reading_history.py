@@ -19,7 +19,7 @@ def add_history():
         return jsonify({"message": "書籍ID不存在！"}), 201
     if data['bookpage'].strip() == '':
         return jsonify({"message": "書頁不得空白！"}), 200
-    
+
 
 
     conn = sqlite3.connect(DATABASE)

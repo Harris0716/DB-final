@@ -30,7 +30,6 @@ def check_book():
 
 @books_bp.route('/add_book', methods=['POST'])
 def add_book():
-    global NUMBER_OF_BOOKS
     """
     Add a new book to the database.
     """
