@@ -10,7 +10,7 @@ def get_book_ids():
     cursor.execute("SELECT id FROM Book")
     return [id[0] for id in cursor.fetchall()]
 # print(get_book_ids())
-print(f'目前資料庫中有{len(get_book_ids())}本書')
+print(f'目前資料庫有{len(get_book_ids())}本書')
 
 @books_bp.route('/check_book', methods=['POST'])
 def check_book():
