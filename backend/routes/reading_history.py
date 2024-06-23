@@ -2,13 +2,9 @@ from flask import Blueprint, request, jsonify
 import sqlite3
 from datetime import datetime
 from config import DATABASE
+from backend.routes.books import get_book_ids
 
 history_bp = Blueprint('history', __name__)
-def get_book_ids():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute("SELECT id FROM Book")
-    return [id[0] for id in cursor.fetchall()]
 
 @history_bp.route('/add_history', methods=['POST'])
 def add_history():
@@ -19,7 +15,6 @@ def add_history():
         return jsonify({"message": "書籍ID不存在！"}), 201
     if data['bookpage'].strip() == '':
         return jsonify({"message": "書頁不得空白！"}), 200
-
 
 
     conn = sqlite3.connect(DATABASE)
