@@ -4,20 +4,22 @@ from datetime import datetime
 from config import DATABASE
 
 history_bp = Blueprint('history', __name__)
-def number_of_books():
+def get_book_ids():
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM Book")
-    return int(cursor.fetchone()[0])
+    cursor.execute("SELECT id FROM Book")
+    return [id[0] for id in cursor.fetchall()]
+
 @history_bp.route('/add_history', methods=['POST'])
 def add_history():
     data = request.get_json()
     if data['book_id'].strip() == '':
         return jsonify({"message": "書籍ID不得空白！"}), 200
+    if not data['book_id'] in get_book_ids():
+        return jsonify({"message": "書籍ID不存在！"}), 201
     if data['bookpage'].strip() == '':
         return jsonify({"message": "書頁不得空白！"}), 200
-    if int(data['book_id']) > number_of_books():
-        return jsonify({"message": "書籍ID不存在！"}), 201
+    
 
 
     conn = sqlite3.connect(DATABASE)

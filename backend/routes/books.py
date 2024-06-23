@@ -4,12 +4,13 @@ from config import DATABASE
 import os
 books_bp = Blueprint('books', __name__)
 
-def number_of_books():
+def get_book_ids():
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute("SELECT COUNT(*) FROM Book")
-    return int(cursor.fetchone()[0])
-
+    cursor.execute("SELECT id FROM Book")
+    return [id[0] for id in cursor.fetchall()]
+# print(get_book_ids())
+print(f'目前資料庫中有{len(get_book_ids())}本書')
 
 @books_bp.route('/check_book', methods=['POST'])
 def check_book():
@@ -60,7 +61,7 @@ def add_book():
 
     conn.commit()
     conn.close()
-    print(f'資料庫有{number_of_books()}本書')
+    print(f'資料庫有{len(get_book_ids())}本書')
     return jsonify({"message": f"書籍 {new_book_title} 新增成功！"}), 201
 
 @books_bp.route('/update_page', methods=['PUT'])
